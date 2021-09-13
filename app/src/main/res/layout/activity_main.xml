@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/activity_background"
+    android:background="@drawable/activity_background_main"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -32,43 +32,49 @@
                android:layout_marginTop="10dp"
                android:text="IMC"
                android:textAlignment="center"
+               android:textColor="@android:color/white"
                android:textSize="30sp"
-               android:textStyle="bold"
-               android:textColor="@android:color/white"/>
+               android:textStyle="bold" />
 
            <EditText
+               android:id="@+id/edit_text_peso"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:layout_marginTop="30dp"
                android:hint="Me conte o seu peso (em kg)"
-               android:background="@drawable/activity_edit_text"
+               android:background="@drawable/activity_edit_text_main"
                android:drawableLeft="@drawable/icone_peso"
                android:drawableTint="@android:color/darker_gray"
                android:drawablePadding="10dp"
                android:textColorHint="@android:color/darker_gray"
-               android:textColor="@android:color/white"/>
+               android:textColor="@android:color/white"
+               android:inputType="number"/>
 
            <EditText
+               android:id="@+id/edit_text_altura"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:layout_marginTop="20dp"
                android:hint="Me conte a sua altura (em m)"
-               android:background="@drawable/activity_edit_text"
+               android:background="@drawable/activity_edit_text_main"
                android:drawableLeft="@drawable/icone_altura"
                android:drawableTint="@android:color/darker_gray"
                android:drawablePadding="10dp"
                android:textColorHint="@android:color/darker_gray"
-               android:textColor="@android:color/white"/>
+               android:textColor="@android:color/white"
+               android:inputType="numberDecimal"/>
 
            <Button
+               android:id="@+id/button_calcular"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:layout_marginTop="30dp"
                android:text="Calcular"
                android:textColor="@android:color/darker_gray"
-               android:background="@drawable/button_background"/>
+               android:background="@drawable/button_background_main"/>
 
            <TextView
+               android:id="@+id/text_view_resultado"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:layout_gravity="center"
@@ -79,6 +85,7 @@
                android:background="@drawable/text_view_background"/>
 
            <TextView
+               android:id="@+id/text_view_situacao"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:text="Peso ideal"
