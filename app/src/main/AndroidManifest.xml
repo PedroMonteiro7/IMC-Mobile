@@ -9,8 +9,8 @@
         android:roundIcon="@drawable/imagem_principal"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".DashboardActivity"></activity>
+        <activity android:name=".ProfileActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,7 +18,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
