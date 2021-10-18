@@ -10,6 +10,8 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        supportActionBar!!.hide()
+
         val criarConta = findViewById<TextView>(R.id.criar_conta)
 
         criarConta.setOnClickListener {
