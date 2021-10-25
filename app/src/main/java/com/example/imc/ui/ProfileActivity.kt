@@ -1,12 +1,17 @@
-package com.example.imc
+package com.example.imc.ui
 
 import android.app.DatePickerDialog
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
-import kotlinx.android.synthetic.main.activity_profile.*
+import com.example.imc.R
+import com.example.imc.model.Usuario
+import com.example.imc.utils.convertStringToLocalDate
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class ProfileActivity : AppCompatActivity() {
@@ -36,7 +41,6 @@ class ProfileActivity : AppCompatActivity() {
         editDataNascimento = findViewById<EditText>(R.id.et_data)
         radioFem = findViewById<RadioButton>(R.id.radio_fem)
         radioMasc = findViewById<RadioButton>(R.id.radio_masc)
-        radioGroup = findViewById<RadioGroup>(R.id.radio_group)
 
 
         //Criar um calendário
@@ -78,16 +82,50 @@ class ProfileActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         if (validarCampos()){
+            //Criar o objeto usuário
+            val nascimento = convertStringToLocalDate(editDataNascimento.text.toString())
+            val usuario = Usuario(
+                1,
+                editNome.text.toString(),
+                editEmail.text.toString(),
+                editSenha.text.toString(),
+                0,
+                editAltura.text.toString().toDouble(),
+                LocalDate.of(nascimento.year, nascimento.monthValue, nascimento.dayOfMonth),
+                editProfissao.text.toString(),
+                if (radioFem.isChecked) {
+                    'F'
+                } else {
+                    'M'
+                }
+            )
+
+            //Salvar o registro em um SharedPreferences
+            //A instrução abaixo criará um arquivo SharedPreferences se não existir
+            //Se existir, ele será aberto para edição
+            val dados = getSharedPreferences("usuario", Context.MODE_PRIVATE)
+
+            //Vamos criar o objeto que permitirá a edição dos dados do arquivo
+            //edição dos dados do arquivo SharedPreferences
+            val editor = dados.edit()
+            editor.putInt("id", usuario.id)
+            editor.putString("nome", usuario.nome)
+            editor.putString("email", usuario.email)
+            editor.putString("senha", usuario.senha)
+            editor.putInt("peso", usuario.peso)
+            editor.putFloat("altura", usuario.altura.toFloat())
+            editor.putString("dataNascimento", usuario.dataNascimento.toString())
+            editor.putString("profissao", usuario.profissao)
+            editor.putString("sexo", usuario.sexo.toString())
+
+            editor.apply()
 
         }
+
+        Toast.makeText(this, "Usuário cadastrado", Toast.LENGTH_SHORT).show()
+
         return true
-//        when (item.itemId) {
-//            R.id.menu_save -> {
-//                Toast.makeText(this, "Salvar", Toast.LENGTH_SHORT).show()
-//            }
-//
-//        }
-//        return true
+
     }
 
     fun validarCampos() : Boolean {

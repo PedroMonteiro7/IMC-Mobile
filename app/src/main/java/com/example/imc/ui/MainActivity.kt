@@ -1,11 +1,13 @@
-package com.example.imc
+package com.example.imc.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
+import com.example.imc.R
+import com.example.imc.calcularImc
+import com.example.imc.situacaoPeso
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -9,16 +9,16 @@
         android:roundIcon="@drawable/imagem_principal"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DashboardActivity"></activity>
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".ui.DashboardActivity"></activity>
+        <activity android:name=".ui.ProfileActivity" />
+        <activity android:name=".ui.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".ui.MainActivity" />
 
         <meta-data
             android:name="preloaded_fonts"
