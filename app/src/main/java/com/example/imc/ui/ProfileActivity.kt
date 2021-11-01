@@ -2,6 +2,9 @@ package com.example.imc.ui
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,10 +13,14 @@ import android.view.MenuItem
 import android.widget.*
 import com.example.imc.R
 import com.example.imc.model.Usuario
+import com.example.imc.utils.convertBitmapToBase64
 import com.example.imc.utils.convertStringToLocalDate
+import kotlinx.android.synthetic.main.activity_profile.*
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
+
+const val CODE_IMAGE = 100
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -26,7 +33,9 @@ class ProfileActivity : AppCompatActivity() {
     lateinit var editDataNascimento: EditText
     lateinit var radioFem: RadioButton
     lateinit var radioMasc: RadioButton
-    lateinit var radioGroup: RadioGroup
+    lateinit var tvTrocarFoto: TextView
+    lateinit var ivFotoPerfil: ImageView
+    var imageBitmap: Bitmap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +51,13 @@ class ProfileActivity : AppCompatActivity() {
         editDataNascimento = findViewById<EditText>(R.id.et_data)
         radioFem = findViewById<RadioButton>(R.id.radio_fem)
         radioMasc = findViewById<RadioButton>(R.id.radio_masc)
+        tvTrocarFoto = findViewById(R.id.tv_trocar_foto)
+        ivFotoPerfil = findViewById(R.id.iv_foto_perfil)
 
+        //Abrir a galeria de fotos para escolher uma
+        tvTrocarFoto.setOnClickListener {
+            abrirGaleria()
+        }
 
         //Criar um calendário
         val calendario = Calendar.getInstance()
@@ -64,6 +79,7 @@ class ProfileActivity : AppCompatActivity() {
 
                     var diaFinal = _dia
                     var mesFinal = _mes + 1
+                    //adicionando 1 ao mês pois começa pelo 0 (janeiro)
 
                     var diaString = "$diaFinal"
                     var mesString = "$mesFinal"
@@ -80,17 +96,32 @@ class ProfileActivity : AppCompatActivity() {
             dp.show()
         }
 
-        //Validar preenchimento dos campos
-//        fun validar() {
-//            val texto_erros = ""
-//            val nome = findViewById<EditText>(R.id.et_nome)
-//
-//            if (nome.text.equals("")) {
-//                texto_erros = "Campo nome é obrigatório\n"
-//                nome.setError("Este campo é obrigatório")
-//            }
-//        }
+    }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, imagem: Intent?) {
+        super.onActivityResult(requestCode, resultCode, imagem)
+
+        if (requestCode == CODE_IMAGE && resultCode == -1) {
+            // Recuperar a imagem do stream
+            val fluxoImagem = contentResolver.openInputStream(imagem!!.data!!)
+
+            // Converter os bits em um bitmap
+            imageBitmap = BitmapFactory.decodeStream(fluxoImagem)
+
+            // Colocar o bitmap no ImageView
+            ivFotoPerfil.setImageBitmap(imageBitmap)
+        }
+    }
+
+    private fun abrirGaleria () {
+
+        //Abrir a galeria de imagens do dispositivo
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "image/*"
+
+        // Abrir a Activity responsável por exibir as imagens
+        // Esta retornará o conteúdo selecionado para o nosso app
+        startActivityForResult(Intent.createChooser(intent, "Escolha uma foto"), CODE_IMAGE)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -112,11 +143,8 @@ class ProfileActivity : AppCompatActivity() {
                 editAltura.text.toString().toDouble(),
                 LocalDate.of(nascimento.year, nascimento.monthValue, nascimento.dayOfMonth),
                 editProfissao.text.toString(),
-                if (radioFem.isChecked) {
-                    'F'
-                } else {
-                    'M'
-                }
+                if (radioFem.isChecked) 'F' else 'M',
+                convertBitmapToBase64(imageBitmap!!)
             )
 
             //Salvar o registro em um SharedPreferences
@@ -136,6 +164,7 @@ class ProfileActivity : AppCompatActivity() {
             editor.putString("dataNascimento", usuario.dataNascimento.toString())
             editor.putString("profissao", usuario.profissao)
             editor.putString("sexo", usuario.sexo.toString())
+            editor.putString("fotoPerfil", usuario.fotoPerfil.toString())
 
             editor.apply()
 

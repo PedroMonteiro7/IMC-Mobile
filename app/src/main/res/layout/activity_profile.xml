@@ -22,8 +22,9 @@
                 android:layout_gravity="center">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/iv_foto_perfil"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:src="@drawable/eu"
                     android:scaleType="centerCrop"/>
 
@@ -36,6 +37,7 @@
             <!--        android:layout_gravity="center"/>-->
 
             <TextView
+                android:id="@+id/tv_trocar_foto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
