@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
@@ -57,7 +58,25 @@ class ProfileActivity : AppCompatActivity() {
         etDataNascimento.setOnClickListener {
             val dp = DatePickerDialog(this,
                 DatePickerDialog.OnDateSetListener { view, _ano, _mes, _dia ->
-                    etDataNascimento.setText("$_dia/${_mes + 1}/$_ano")}, ano, mes, dia)
+
+                    Log.i("xpto", _dia.toString())
+                    Log.i("xpto", _mes.toString())
+
+                    var diaFinal = _dia
+                    var mesFinal = _mes + 1
+
+                    var diaString = "$diaFinal"
+                    var mesString = "$mesFinal"
+
+                    if (dia < 10) {
+                        diaString = "0$diaFinal"
+                    }
+
+                    if (mes < 10) {
+                        mesString = "0$mesFinal"
+                    }
+
+                    etDataNascimento.setText("$diaString/$mesString/$_ano")}, ano, mes, dia)
             dp.show()
         }
 
@@ -120,9 +139,11 @@ class ProfileActivity : AppCompatActivity() {
 
             editor.apply()
 
+            Toast.makeText(this, "Usuário cadastrado", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "Erro.", Toast.LENGTH_SHORT).show()
         }
 
-        Toast.makeText(this, "Usuário cadastrado", Toast.LENGTH_SHORT).show()
 
         return true
 
@@ -156,9 +177,8 @@ class ProfileActivity : AppCompatActivity() {
             editProfissao.error = "Este campo é de preenchimento obrigatório."
             valido = false
         }
-        if(radioFem.isChecked || radioMasc.isChecked){
-            radioFem.error = "Selecione essa"
-            radioMasc.error = "ou essa opção."
+        if(!radioFem.isChecked && !radioMasc.isChecked){
+            radioMasc.error = "Selecione alguma opção."
             valido = false
         }
 
